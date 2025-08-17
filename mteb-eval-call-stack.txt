@@ -3,8 +3,8 @@
 MTEB.run
  └── _run_eval (MTEB)
       └── evaluate (AbsTaskRetrieval)
-           ├── new RetrievingEvaluator
+           ├── new RetrievalEvaluator
            │     └── new DenseRetrievalExactSearch
            └── _evaluate_subset (AbsTaskRetrieval)
-                └── __call__ (RetrievingEvaluator)
+                └── __call__ (RetrievalEvaluator)
                      └── search (DenseRetrievalExactSearch)
