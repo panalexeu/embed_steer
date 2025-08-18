@@ -1,11 +1,12 @@
 import json
 import asyncio
-import os.path
 import logging
 from pathlib import Path
 
 from openai import AsyncOpenAI, OpenAI
 from openai.types.responses import Response
+
+logger = logging.getLogger(__name__)
 
 
 class SyntheticQueryGenerator:
@@ -26,9 +27,6 @@ class SyntheticQueryGenerator:
     ):
         self.client = client
         self.model = model
-
-        if not os.path.exists(cache_path):
-            raise ValueError(f"Irrelevant path provided: {cache_path}")
         self.cache_path = cache_path
 
     @staticmethod
@@ -57,8 +55,8 @@ class SyntheticQueryGenerator:
         return self._flatten_openai_resp(res)
 
     def _store_jsonl(self, syn_queries: dict[str, str]):
-        json_queries = [json.dumps(q) for q in syn_queries]
-        with open(self.cache_path) as file:
+        json_queries = [json.dumps({q[0]: q[1]}) + '\n' for q in syn_queries.items()]
+        with open(self.cache_path, 'w') as file:
             file.writelines(json_queries)
 
     def gen(
@@ -81,12 +79,12 @@ class SyntheticQueryGenerator:
         corpus = list(sorted(corpus.items(), key=lambda x: len(x[1]), reverse=True))  # [(doc_id, content), ...]
 
         itr = range(0, len(corpus), batch_size)
-        for i in range(itr):
+        for i in itr:
             batch = corpus[i:i + batch_size]
-            logging.info(f'Processing batch: {i}-{i + batch_size}')
+            logger.info(f'Processing batch: {i}-{i + batch_size}')
 
             tasks = [self._agen_query(doc[1], **kwargs) for doc in batch]
-            results = asyncio.gather(*tasks)
+            results = await asyncio.gather(*tasks)
 
             # map results to relevant doc_id's
             for doc, res in zip(batch, results):
