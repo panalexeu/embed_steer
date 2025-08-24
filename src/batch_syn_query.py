@@ -16,7 +16,7 @@ class BatchSynQueryGenerator:
             self,
             model: str,
             sys_prompt: str = BASE_SYS_PROMPT,
-            batch_path: Path = Path('./batch-queries.jsonl')
+            batch_path: Path = Path('./batch-syn-queries.jsonl')
     ):
         self.model = model
         self.sys_prompt = sys_prompt
