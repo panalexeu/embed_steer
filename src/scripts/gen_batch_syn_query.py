@@ -1,8 +1,10 @@
 from mteb import NQ
+import logging
 
 from src.batch_syn_query import BatchSynQueryGenerator
 from src.prompts import BASE_SYS_PROMPT
 
+logging.basicConfig(level=logging.INFO)
 
 if __name__ == '__main__':
     nq = NQ()
