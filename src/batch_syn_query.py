@@ -24,8 +24,11 @@ class BatchSynQueryGenerator:
 
     def _store_jsonl(self, calls: list[dict]):
         with open(self.batch_path, 'w') as file:
-            for req in calls:
-                file.write(json.dumps(req) + '\n')
+            for i, req in enumerate(calls):
+                if i != len(calls) - 1:
+                    file.write(json.dumps(req) + '\n')
+                else:
+                    file.write(json.dumps(req))
 
     def gen(
             self,
