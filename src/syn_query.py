@@ -6,6 +6,8 @@ from pathlib import Path
 from openai import AsyncOpenAI, OpenAI
 from openai.types.responses import Response
 
+from src.prompts import BASE_SYS_PROMPT
+
 logger = logging.getLogger(__name__)
 
 
@@ -13,20 +15,17 @@ class SyntheticQueryGenerator:
     """
     Generates synthetic query/ies for the provided ``MTEB`` document corpus and caches them in a ``jsonl`` format file.
     """
-    sys_prompt = '''
-    You are a helpful AI assistant.
-    Generate most relevant and short search question for the document excerpt provided by the user.
-    Return only the generated query.
-    '''.strip()
 
     def __init__(
             self,
             client: AsyncOpenAI | OpenAI,
             model: str,
+            sys_prompt: str = BASE_SYS_PROMPT,
             cache_path: Path = './syn-queries.jsonl'
     ):
         self.client = client
         self.model = model
+        self.sys_prompt = sys_prompt
         self.cache_path = cache_path
 
     @staticmethod
@@ -73,6 +72,7 @@ class SyntheticQueryGenerator:
     ) -> dict[str, str]:
         if not isinstance(self.client, AsyncOpenAI):
             raise ValueError("Asynchronous method requires an async OpenAI client, got sync client instead.")
+
         syn_queries = {}
 
         # sort corpus to hit rate limits early for the provided batch size
