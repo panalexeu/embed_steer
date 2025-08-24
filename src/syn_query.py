@@ -21,7 +21,7 @@ class SyntheticQueryGenerator:
             client: AsyncOpenAI | OpenAI,
             model: str,
             sys_prompt: str = BASE_SYS_PROMPT,
-            cache_path: Path = './syn-queries.jsonl'
+            cache_path: Path = Path('./syn-queries.jsonl')
     ):
         self.client = client
         self.model = model
