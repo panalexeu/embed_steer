@@ -39,7 +39,6 @@ if __name__ == '__main__':
         asyncio.run(
             syn_gen.agen(
                 corpus,
-                batch_size=8,
-                temperature=0.7
+                batch_size=8
             )
         )
