@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import sys
 
 from mteb import NQ
 from openai import OpenAI, AsyncOpenAI
@@ -11,9 +12,12 @@ from src.prompts import BASE_SYS_PROMPT
 logging.basicConfig(level=logging.INFO)
 
 if __name__ == '__main__':
+    url = sys.argv[1]
+    model = sys.argv[2]
+
     load_dotenv()
     client = AsyncOpenAI(
-        base_url='https://api.groq.com/openai/v1'
+        base_url=url,
     )
 
     nq = NQ()
@@ -22,7 +26,7 @@ if __name__ == '__main__':
     for split in nq.eval_splits:
         syn_gen = SyntheticQueryGenerator(
             client=client,
-            model='llama-3.1-8b-instant',
+            model=model,
             cache_path=f'./{split}-syn-queries.jsonl',
             sys_prompt=BASE_SYS_PROMPT
         )

@@ -1,9 +1,20 @@
-datasets: 
-* https://huggingface.co/datasets/mteb/nq;
+## embed-steer
 
-groq models rate limits: 
-* https://console.groq.com/docs/rate-limits
-llama-3.1-8b-instant
-RPM: 1K
-RPD: 500K
-TPM: 250K
+### Command Usage
+
+To generate synthetic queries, use the following command:
+
+```bash
+python3 -m src.scripts.gen_syn_query <URL> <MODEL>
+```
+
+- `<URL>`: OpenAI Chat Completions API compatible server.
+- `<MODEL>`: Name of the model to be used.
+
+### Example
+
+Here is an example using a model served via `vLLM`:
+
+```bash
+python3 -m src.scripts.gen_syn_query http://localhost:8000/v1 Qwen/Qwen2.5-0.5B-Instruct
+```
