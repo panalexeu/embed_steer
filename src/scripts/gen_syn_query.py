@@ -33,6 +33,6 @@ if __name__ == '__main__':
             syn_gen.agen(
                 corpus,
                 batch_size=8,
-                temperature=0
+                temperature=0.7
             )
         )
