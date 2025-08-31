@@ -4,7 +4,7 @@ import logging
 from pathlib import Path
 
 from openai import AsyncOpenAI, OpenAI
-from openai.types.responses import Response
+from openai.types.chat import ChatCompletion
 
 from src.prompts import BASE_SYS_PROMPT
 
@@ -29,16 +29,16 @@ class SyntheticQueryGenerator:
         self.cache_path = cache_path
 
     @staticmethod
-    def _flatten_openai_resp(response: Response):
-        return response.output[1].content[0].text.lower()
+    def _flatten_chat_completion(completion: ChatCompletion):
+        return completion.choices[0].message
 
     def _gen_query(self, doc: str, **kwargs) -> str:
         raise NotImplementedError
 
     async def _agen_query(self, doc: str, **kwargs) -> str:
-        res = await self.client.responses.create(
+        res = await self.client.chat.completions.create(
             model=self.model,
-            input=[
+            messages=[
                 {
                     'role': 'system',
                     'content': self.sys_prompt
@@ -51,7 +51,7 @@ class SyntheticQueryGenerator:
             **kwargs
         )
 
-        return self._flatten_openai_resp(res)
+        return self._flatten_chat_completion(res)
 
     def _store_jsonl(self, syn_queries: dict[str, str]):
         json_queries = [json.dumps({q[0]: q[1]}) + '\n' for q in syn_queries.items()]
