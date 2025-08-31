@@ -5,11 +5,12 @@
 To generate synthetic queries, use the following command:
 
 ```bash
-python3 -m src.scripts.gen_syn_query <URL> <MODEL>
+python3 -m src.scripts.gen_syn_query <URL> <MODEL> <TOKENS>
 ```
 
 - `<URL>`: OpenAI Chat Completions API compatible server.
 - `<MODEL>`: Name of the model to be used.
+- `<TOKENS>`: Maximum number of tokens to which each document in the corpus will be truncated.
 
 ### Example
 

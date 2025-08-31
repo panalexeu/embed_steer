@@ -8,12 +8,14 @@ from dotenv import load_dotenv
 
 from src.syn_query import SyntheticQueryGenerator
 from src.prompts import BASE_SYS_PROMPT
+from src.utils import _truncate_corpus
 
 logging.basicConfig(level=logging.INFO)
 
 if __name__ == '__main__':
     url = sys.argv[1]
     model = sys.argv[2]
+    tokens = sys.argv[3]
 
     load_dotenv()
     client = AsyncOpenAI(
@@ -32,6 +34,7 @@ if __name__ == '__main__':
         )
 
         corpus = dict(list(nq.corpus[split].items())[:16])
+        corpus = _truncate_corpus(model, corpus, token_limit=tokens)
 
         asyncio.run(
             syn_gen.agen(
