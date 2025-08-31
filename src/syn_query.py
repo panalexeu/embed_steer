@@ -30,7 +30,7 @@ class SyntheticQueryGenerator:
 
     @staticmethod
     def _flatten_chat_completion(completion: ChatCompletion):
-        return completion.choices[0].message.content
+        return completion.choices[0].message.content.lower()
 
     def _gen_query(self, doc: str, **kwargs) -> str:
         raise NotImplementedError

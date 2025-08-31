@@ -16,6 +16,7 @@ if __name__ == '__main__':
     url = sys.argv[1]
     model = sys.argv[2]
     tokens = sys.argv[3]
+    batch_size = int(sys.argv[4])
 
     load_dotenv()
     client = AsyncOpenAI(
@@ -33,12 +34,12 @@ if __name__ == '__main__':
             sys_prompt=BASE_SYS_PROMPT
         )
 
-        corpus = dict(list(nq.corpus[split].items())[:16])
-        corpus = _truncate_corpus(model, corpus, token_limit=tokens)
+        # corpus = dict(list(nq.corpus[split].items())[:16])
+        corpus = _truncate_corpus(model, nq.corpus[split], token_limit=tokens)
 
         asyncio.run(
             syn_gen.agen(
                 corpus,
-                batch_size=8
+                batch_size=batch_size
             )
         )
