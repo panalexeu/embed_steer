@@ -18,5 +18,5 @@ python3 -m src.scripts.gen_syn_query <URL> <MODEL> <TOKENS> <BATCH_SIZE>
 Here is an example using a model served via `vLLM`:
 
 ```bash
-python3 -m src.scripts.gen_syn_query http://localhost:8000/v1 Qwen/Qwen2.5-0.5B-Instruct
+python3 -m src.scripts.gen_syn_query http://localhost:8000/v1 Qwen/Qwen2.5-0.5B-Instruct 192 780
 ```

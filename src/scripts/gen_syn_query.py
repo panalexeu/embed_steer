@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 if __name__ == '__main__':
     url = sys.argv[1]
     model = sys.argv[2]
-    tokens = sys.argv[3]
+    tokens = int(sys.argv[3])
     batch_size = int(sys.argv[4])
 
     load_dotenv()
@@ -40,6 +40,7 @@ if __name__ == '__main__':
         asyncio.run(
             syn_gen.agen(
                 corpus,
-                batch_size=batch_size
+                batch_size=batch_size,
+                temperature=0
             )
         )
